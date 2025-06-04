@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>名刺デザイン見積もりシミュレーター</title> <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+    <div class="container" id="printableArea">
+        <h1>名刺デザイン見積もりシミュレーター</h1> <div class="content-wrapper">
+
+            <div class="left-column">
+                <div class="section">
+                    <h2>基本料金</h2>
+                    <label class="checkbox-group-item">
+                        <input type="checkbox" name="basePrice" value="one_side" data-price="25000">
+                        ライトプラン: 25,000円
+                    </label>
+                    <p class="description">
+                        ・片面デザイン
+                    </p>
+
+                    <label class="checkbox-group-item">
+                        <input type="checkbox" name="basePrice" value="both_sides" data-price="50000">
+                        レギュラープラン: 50,000円
+                    </label>
+                    <p class="description">
+                        ・両面デザイン
+                    </p>
+                </div>
+
+                <div class="section">
+                    <h2>コピー作成費</h2>
+                    <label class="checkbox-group-item">
+                        <input type="checkbox" name="copywritingFee" value="light_adjust" data-price="5000">
+                        お客様よりテキストの支給がある（軽い調整のみ）: 5,000円
+                    </label>
+                    <label class="checkbox-group-item">
+                        <input type="checkbox" name="copywritingFee" value="full_creation" data-price="10000">
+                        キャッチコピー・本文の提案・作成も依頼したい: 10,000円
+                    </label>
+                </div>
+            </div> <div class="right-column">
+                <div class="section">
+                    <h2>オプション（任意）</h2>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="optionOriginalData" value="design_original" data-price="10000"> デザインデータ原本（アウトライン前）: 10,000円〜20,000円
+                    </label>
+                    <div class="toggle-container">
+                        <h4 class="toggle-header">詳細 <span class="toggle-icon">▼</span></h4> <div class="toggle-content">
+                            <ul>
+                                <li>デザインデータ原本の納品をご希望の場合、別途料金が発生いたしますのでご了承ください。</li>
+                                <li>著作者人格権保護の観点から、原本の納品をご希望の場合はご依頼の際に契約書を締結させていただきます場合がございます。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="total-area">
+                    <h3>合計金額: <span id="totalPrice">000000</span>円</h3>
+                    <button id="exportPdfButton">見積書をPDFで出力する</button>
+                </div>
+            </div> </div> </div> <script src="script.js"></script>
+</body>
+</html>

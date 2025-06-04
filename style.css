@@ -1,0 +1,234 @@
+/* 前回ウェブサイト制作シミュレーターで提供したstyle.cssのコードをそのまま使用 */
+/* 変更は不要です */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+        "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+        sans-serif;
+    line-height: 1.6;
+    background-color: #f7f7f7;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1000px;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: 2.2em;
+    margin-bottom: 40px;
+    color: #333;
+    text-align: center;
+}
+
+.content-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.left-column,
+.right-column {
+    flex: 1;
+    min-width: 300px;
+}
+
+@media (max-width: 768px) {
+    .content-wrapper {
+        flex-direction: column;
+        gap: 0;
+    }
+    .left-column,
+    .right-column {
+        min-width: unset;
+        width: 100%;
+    }
+    .section:last-of-type {
+        border-bottom: 1px solid #eee;
+    }
+    .right-column .section:last-of-type { 
+        border-bottom: none;
+    }
+}
+
+
+.section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 15px;
+}
+
+h2 {
+    font-size: 1.3em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.checkbox-group-item,
+.checkbox-item {
+    display: block;
+    margin-bottom: 15px;
+    cursor: pointer;
+    padding: 5px 0;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.1);
+    vertical-align: middle;
+}
+
+.description {
+    font-size: 0.95em;
+    color: #555;
+    margin-top: -5px;
+    margin-left: 28px;
+    margin-bottom: 20px;
+    word-wrap: break-word;
+}
+
+.toggle-container {
+    margin-left: 28px;
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #fdfdfd;
+}
+
+.toggle-header {
+    font-size: 1em;
+    color: #007bff;
+    margin: 0;
+    padding: 10px 15px;
+    cursor: pointer;
+    background-color: #e6f2ff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccddee;
+}
+
+.toggle-header:hover {
+    background-color: #dbeaff;
+}
+
+.toggle-icon {
+    transition: transform 0.2s ease-in-out;
+}
+
+.toggle-header.active .toggle-icon {
+    transform: rotate(180deg);
+}
+
+.toggle-content {
+    padding: 10px 15px;
+    display: none;
+}
+
+.toggle-content ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.toggle-content ul li {
+    position: relative;
+    padding-left: 15px;
+    margin-bottom: 5px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    min-width: 0;
+}
+
+.toggle-content ul li::before {
+    content: '・';
+    position: absolute;
+    left: 0;
+    color: #007bff;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 40px 0;
+}
+
+.total-area {
+    text-align: right;
+    margin-top: 20px;
+}
+
+#totalPrice {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #007bff;
+    margin-left: 10px;
+}
+
+#exportPdfButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+}
+
+#exportPdfButton:hover {
+    background-color: #0056b3;
+}
+
+@media print {
+    #exportPdfButton {
+        display: none !important;
+    }
+    .container {
+        box-shadow: none;
+        border-radius: 0;
+        padding: 20px;
+    }
+    body {
+        background-color: #fff;
+    }
+    .toggle-content {
+        display: block !important;
+    }
+    .toggle-header .toggle-icon {
+        display: none;
+    }
+    .toggle-container {
+        border: none;
+        background-color: transparent;
+        padding: 0;
+        margin-left: 0;
+    }
+    .toggle-header {
+        background-color: transparent;
+        border-bottom: none;
+        padding-left: 0;
+    }
+    .toggle-content ul {
+        margin-left: 28px;
+    }
+}
