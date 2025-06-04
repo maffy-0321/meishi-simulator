@@ -109,7 +109,7 @@ h1 {
         padding-bottom: 20px;
         margin-bottom: 25px;
     }
-    .right-column .section:last-of-type { 
+    .right-column .section:last-of-type {
         border-bottom: none;
         padding-bottom: 0;
         margin-bottom: 0;
@@ -372,6 +372,114 @@ input[type="checkbox"]:focus {
 }
 
 
+/* アラートダイアログのスタイルここから */
+.alert-overlay {
+    position: fixed; /* 画面に固定 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    display: none; /* 初期状態では非表示にする */
+}
+
+.alert-dialog {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    width: 90%; /* 幅を画面の90%に設定 */
+    max-width: 320px; /* 最大幅を設定してPCでも広がりすぎないようにする */
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    color: #333;
+    /* 新しい中央寄せプロパティは不要になるため削除
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    */
+}
+
+.alert-header {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    background-color: #f7f7f7;
+}
+
+.alert-icon {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+.alert-icon::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(45deg, var(--accent-start-color), var(--accent-end-color));
+    border-radius: 5px;
+    vertical-align: middle;
+    transform: rotate(45deg);
+    margin-left: 2px; /* アイコンの位置調整 */
+    margin-right: 10px;
+}
+
+
+.alert-header p {
+    margin: 0;
+    font-weight: 600;
+    font-size: 0.95em;
+    color: var(--text-color-dark);
+}
+
+.alert-body {
+    padding: 20px;
+    font-size: 0.9em;
+    line-height: 1.5;
+    color: var(--text-color-medium);
+}
+
+.alert-body p {
+    margin: 0;
+}
+
+.alert-footer {
+    padding: 10px 20px 15px;
+    text-align: right;
+    border-top: 1px solid #f0f0f0;
+}
+
+#alertOkButton {
+    background-color: #007aff; /* iOSのOKボタンの色に寄せる */
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+#alertOkButton:hover {
+    background-color: #005bb5;
+}
+
+#alertOkButton:active {
+    background-color: #003e80;
+}
+/* アラートダイアログのスタイルここまで */
+
+
 /* PDF出力時に非表示にする要素 (例: PDFボタン自体) */
 @media print {
     /* 全体的な印刷設定 */
@@ -379,41 +487,38 @@ input[type="checkbox"]:focus {
         background-color: #fff;
         padding: 0;
         align-items: flex-start;
-        font-size: 9pt; /* 基本フォントサイズをさらに小さく */
-        margin: 0; /* マージンをリセット */
-        /* PDFを1枚に収めるための最終手段（ブラウザ依存度高） */
-        /* transform: scale(0.8); */ /* 全体を縮小するが、文字の鮮明度が落ちる可能性あり */
-        /* transform-origin: top left; */
+        font-size: 9pt;
+        margin: 0;
     }
     .container {
         box-shadow: none;
         border-radius: 0;
-        padding: 8mm 10mm; /* 物理的な単位でパディングを調整（上下をさらに狭く） */
+        padding: 8mm 10mm;
         margin: 0;
-        max-width: 100%; /* 最大幅もリセット */
-        width: auto; /* 幅を自動調整 */
-        height: auto !important; /* 高さも自動調整 */
-        overflow: visible !important; /* はみ出しを許可 */
+        max-width: 100%;
+        width: auto;
+        height: auto !important;
+        overflow: visible !important;
     }
     h1 {
-        font-size: 1.6em; /* 印刷時のH1サイズをさらに小さく */
+        font-size: 1.6em;
         margin-bottom: 10px;
     }
     .subtitle {
-        font-size: 0.9em; /* 印刷時のサブタイトルサイズ */
+        font-size: 0.9em;
         margin-bottom: 15px;
     }
     h2 {
-        font-size: 1.1em; /* 印刷時のH2サイズをさらに小さく */
+        font-size: 1.1em;
         margin-bottom: 10px;
         padding-bottom: 4px;
-        border-bottom: 1px solid #ccc; /* 印刷時の下線は単色に */
+        border-bottom: 1px solid #ccc;
     }
     .section {
-        margin-bottom: 10px; /* 印刷時のセクション間隔を狭める */
-        padding-bottom: 8px; /* 下部パディングも調整 */
-        border-bottom: 1px dashed #eee; /* 薄い破線で区切りを明確に */
-        break-inside: avoid; /* セクション途中の改ページを避ける */
+        margin-bottom: 10px;
+        padding-bottom: 8px;
+        border-bottom: 1px dashed #eee;
+        break-inside: avoid;
         page-break-inside: avoid;
     }
     .section:last-of-type {
@@ -425,10 +530,10 @@ input[type="checkbox"]:focus {
     .checkbox-group-item,
     .checkbox-item,
     .description {
-        margin-bottom: 5px; /* 印刷時の要素間隔をさらに狭める */
-        padding: 0; /* パディングをなくす */
-        font-size: 0.85em; /* 印刷時のフォントサイズをさらに小さく */
-        line-height: 1.4; /* 行の高さを調整 */
+        margin-bottom: 5px;
+        padding: 0;
+        font-size: 0.85em;
+        line-height: 1.4;
     }
     input[type="text"],
     input[type="number"] {
@@ -511,14 +616,14 @@ input[type="checkbox"]:focus {
         font-size: 2.2em;
         margin-top: 5px;
         margin-bottom: 5px;
-        background: none;
+        background: none; /* 印刷時もグラデーションを削除 */
         -webkit-background-clip: unset;
         -webkit-text-fill-color: var(--accent-start-color);
         color: var(--accent-start-color);
     }
     .currency-yen {
         font-size: 0.9em;
-        background: none;
+        background: none; /* 印刷時もグラデーションを削除 */
         -webkit-background-clip: unset;
         -webkit-text-fill-color: var(--accent-start-color);
         color: var(--accent-start-color);
@@ -531,5 +636,6 @@ input[type="checkbox"]:focus {
     #exportPdfButton {
         display: none !important;
     }
-}
+
+
 }
