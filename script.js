@@ -83,13 +83,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const toggleContent = header.nextElementSibling;
             if (toggleContent && toggleContent.classList.contains('toggle-content')) {
                 // heightをmaxHeightに切り替えることでtransitionを有効にする
-                if (toggleContent.style.maxHeight) {
-                    toggleContent.style.maxHeight = null;
-                    header.classList.remove('active');
-                } else {
-                    toggleContent.style.maxHeight = toggleContent.scrollHeight + 'px';
-                    header.classList.add('active');
-                }
+                if (toggleContent.style.maxHeight) { // 現在開いている場合（maxHeightが設定されている場合）
+                toggleContent.style.maxHeight = null;
+                // 追加: 閉じる際にdisplayをnoneにする
+                toggleContent.style.display = 'none';
+                header.classList.remove('active');
+            } else {
+                // 追加: 開く際にdisplayをblockにする
+                toggleContent.style.display = 'block';
+                toggleContent.style.maxHeight = toggleContent.scrollHeight + 'px';
+                header.classList.add('active');
+            }
             }
         });
     });
