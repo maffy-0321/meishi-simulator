@@ -84,16 +84,20 @@ document.addEventListener('DOMContentLoaded', () => {
             if (toggleContent && toggleContent.classList.contains('toggle-content')) {
                 // heightをmaxHeightに切り替えることでtransitionを有効にする
                 if (toggleContent.style.maxHeight) { // 現在開いている場合（maxHeightが設定されている場合）
-                toggleContent.style.maxHeight = null;
-                // 追加: 閉じる際にdisplayをnoneにする
-                toggleContent.style.display = 'none';
-                header.classList.remove('active');
-            } else {
-                // 追加: 開く際にdisplayをblockにする
-                toggleContent.style.display = 'block';
-                toggleContent.style.maxHeight = toggleContent.scrollHeight + 'px';
-                header.classList.add('active');
-            }
+                    toggleContent.style.maxHeight = null;
+                    // スムーズなトランジションのために少し遅延させてからdisplay: none;にする
+                    setTimeout(() => {
+                        toggleContent.style.display = 'none';
+                    }, 300); // 必要に応じてCSSのtransition durationに合わせて調整
+                    header.classList.remove('active');
+                } else {
+                    toggleContent.style.display = 'block'; // まず要素を表示状態にする
+                    // 強制的にブラウザのレイアウトを再計算させる
+                    // これにより、display: block;が適用された後の正しい scrollHeight が得られる
+                    toggleContent.offsetHeight; // この行が reflow を強制します
+                    toggleContent.style.maxHeight = toggleContent.scrollHeight + 'px';
+                    header.classList.add('active');
+                }
             }
         });
     });
@@ -112,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
             header.classList.add('active');
             const toggleContent = header.nextElementSibling;
             if (toggleContent && toggleContent.classList.contains('toggle-content')) {
+                toggleContent.style.display = 'block'; // PDF出力時は強制的に表示
                 toggleContent.style.maxHeight = toggleContent.scrollHeight + 'px'; // 正しい高さを設定
                 toggleContent.style.overflow = 'visible'; // overflowをvisibleに設定
             }
@@ -170,6 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (toggleContent && toggleContent.classList.contains('toggle-content')) {
                     toggleContent.style.maxHeight = null;
                     toggleContent.style.overflow = 'hidden';
+                    // 元に戻すときはdisplayもnoneに
+                    toggleContent.style.display = 'none';
                 }
             });
         }).catch(error => {
