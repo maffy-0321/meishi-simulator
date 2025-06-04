@@ -1,136 +1,264 @@
-/* 前回ウェブサイト制作シミュレーターで提供したstyle.cssのコードをそのまま使用 */
-/* 変更は不要です */
+:root {
+    --accent-start-color: #8c82d0; /* ロゴのグラデーション開始色 */
+    --accent-end-color: #f78d91;   /* ロゴのグラデーション終了色 */
+    --text-color-dark: #2c3e50;
+    --text-color-medium: #34495e;
+    --text-color-light: #555;
+    --bg-color-light: #f0f2f5;
+    --card-bg-color: #ffffff;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --hover-bg-color: linear-gradient(to right, rgba(140, 130, 208, 0.1), rgba(247, 141, 145, 0.1)); /* ホバー時のグラデーション */
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
         "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
         sans-serif;
     line-height: 1.6;
-    background-color: #f7f7f7;
-    color: #333;
+    background-color: var(--bg-color-light);
+    color: var(--text-color-dark);
     margin: 0;
     padding: 20px;
     display: flex;
     justify-content: center;
+    align-items: flex-start; /* コンテンツを上部に寄せる */
     box-sizing: border-box;
-    min-height: 100vh;
+    min-height: 100vh; /* 少なくともビューポートの高さは確保 */
 }
 
 .container {
-    max-width: 1000px;
+    max-width: 1100px;
     width: 100%;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    padding: 40px;
+    background-color: var(--card-bg-color);
+    border-radius: 16px;
+    box-shadow: 0 8px 30px var(--shadow-color);
+    padding: 50px;
     box-sizing: border-box;
+    margin-top: 40px;
+    margin-bottom: 40px;
 }
 
 h1 {
-    font-size: 2.2em;
-    margin-bottom: 40px;
-    color: #333;
+    font-size: 2.8em;
+    margin-bottom: 10px;
+    color: var(--text-color-dark);
     text-align: center;
+    font-weight: 700;
 }
 
+.subtitle {
+    font-size: 1.5em;
+    color: var(--text-color-light);
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+/* 2カラムレイアウトの定義 */
 .content-wrapper {
     display: flex;
     flex-wrap: wrap;
-    gap: 40px;
+    gap: 30px;
 }
 
 .left-column,
 .right-column {
     flex: 1;
-    min-width: 300px;
+    min-width: 380px;
+    background-color: var(--card-bg-color);
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 30px;
+    box-sizing: border-box;
 }
 
-@media (max-width: 768px) {
+.right-column {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 画面幅が880px以下の場合、1カラムにする */
+@media (max-width: 880px) {
     .content-wrapper {
         flex-direction: column;
-        gap: 0;
+        gap: 20px;
     }
     .left-column,
     .right-column {
         min-width: unset;
         width: 100%;
+        padding: 25px;
+    }
+    .container {
+        padding: 25px;
+        margin-top: 25px;
+        margin-bottom: 25px;
+    }
+    h1 {
+        font-size: 2em;
+        margin-bottom: 10px;
+    }
+    .subtitle {
+        font-size: 1.2em;
+        margin-bottom: 30px;
+    }
+    .total-area {
+        margin-top: 25px;
     }
     .section:last-of-type {
         border-bottom: 1px solid #eee;
+        padding-bottom: 20px;
+        margin-bottom: 25px;
     }
     .right-column .section:last-of-type { 
         border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 0;
     }
 }
 
 
 .section {
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #eee;
+    margin-bottom: 35px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #f0f0f0;
+    /* 印刷時に途中で分割されないようにする */
+    break-inside: avoid;
+    page-break-inside: avoid;
 }
 
 .section:last-of-type {
     border-bottom: none;
-    margin-bottom: 15px;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 h2 {
-    font-size: 1.3em;
-    color: #333;
+    font-size: 1.4em;
+    color: var(--text-color-medium);
+    margin-bottom: 25px;
+    font-weight: 600;
+    border-bottom: 2px solid var(--accent-start-color);
+    padding-bottom: 8px;
+    margin-top: 0;
+}
+
+.input-group {
     margin-bottom: 20px;
 }
+
+.input-label {
+    display: block;
+    font-size: 0.95em;
+    color: var(--text-color-light);
+    margin-bottom: 8px;
+}
+
+/* テキスト入力フィールドのスタイル */
+input[type="text"],
+input[type="number"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]F:focus {
+    border-color: var(--accent-start-color);
+    box-shadow: 0 0 0 3px rgba(140, 130, 208, 0.2);
+    outline: none;
+}
+
 
 .checkbox-group-item,
 .checkbox-item {
-    display: block;
+    display: flex;
+    align-items: center;
     margin-bottom: 15px;
     cursor: pointer;
-    padding: 5px 0;
+    padding: 8px 10px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid var(--bg-color-light);
+}
+
+.checkbox-group-item:hover,
+.checkbox-item:hover {
+    background: var(--hover-bg-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 input[type="checkbox"] {
-    margin-right: 10px;
+    margin-right: 12px;
     transform: scale(1.1);
     vertical-align: middle;
+    accent-color: var(--accent-start-color);
+    min-width: 20px;
+    min-height: 20px;
 }
+
+input[type="checkbox"]:focus {
+    outline: 2px solid var(--accent-start-color);
+    outline-offset: 3px;
+}
+
+.checkbox-label {
+    flex-grow: 1;
+    font-size: 1.05em;
+    color: var(--text-color-dark);
+}
+
+.checkbox-price {
+    font-weight: bold;
+    color: var(--accent-start-color);
+    margin-left: 10px;
+    white-space: nowrap;
+}
+
 
 .description {
-    font-size: 0.95em;
-    color: #555;
-    margin-top: -5px;
-    margin-left: 28px;
+    font-size: 0.9em;
+    color: #777;
+    margin-top: 5px;
+    margin-left: 32px;
     margin-bottom: 20px;
     word-wrap: break-word;
+    line-height: 1.5;
 }
 
+/* トグル関連のスタイル */
 .toggle-container {
-    margin-left: 28px;
-    margin-bottom: 20px;
-    border: 1px solid #eee;
-    border-radius: 4px;
+    margin-left: 0;
+    margin-bottom: 25px;
+    border: 1px solid #e0e6eb;
+    border-radius: 8px;
     overflow: hidden;
     background-color: #fdfdfd;
 }
 
 .toggle-header {
-    font-size: 1em;
-    color: #007bff;
+    font-size: 1.05em;
+    font-weight: 600;
+    color: var(--accent-start-color);
     margin: 0;
-    padding: 10px 15px;
+    padding: 15px 20px;
     cursor: pointer;
-    background-color: #e6f2ff;
+    background-color: var(--hover-bg-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #ccddee;
+    border-bottom: 1px solid #dbeaff;
 }
 
 .toggle-header:hover {
-    background-color: #dbeaff;
+    background-color: rgba(var(--accent-start-color), 0.15);
 }
 
 .toggle-icon {
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.3s ease-in-out;
 }
 
 .toggle-header.active .toggle-icon {
@@ -138,8 +266,9 @@ input[type="checkbox"] {
 }
 
 .toggle-content {
-    padding: 10px 15px;
+    padding: 15px 20px;
     display: none;
+    line-height: 1.7;
 }
 
 .toggle-content ul {
@@ -150,69 +279,201 @@ input[type="checkbox"] {
 
 .toggle-content ul li {
     position: relative;
-    padding-left: 15px;
-    margin-bottom: 5px;
+    padding-left: 20px;
+    margin-bottom: 8px;
     overflow-wrap: break-word;
     word-break: break-word;
     min-width: 0;
+    color: var(--text-color-light);
 }
 
 .toggle-content ul li::before {
     content: '・';
     position: absolute;
     left: 0;
-    color: #007bff;
+    color: var(--accent-start-color);
+    font-weight: bold;
 }
 
-hr {
-    border: none;
-    border-top: 1px solid #eee;
-    margin: 40px 0;
-}
-
+/* 合計金額エリア */
 .total-area {
-    text-align: right;
-    margin-top: 20px;
+    background-color: var(--card-bg-color);
+    border-radius: 12px;
+    padding: 25px 30px;
+    text-align: center;
+    margin-top: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.total-area h3 {
+    font-size: 1.4em;
+    color: var(--text-color-dark);
+    margin-bottom: 10px;
+    font-weight: 600;
 }
 
 #totalPrice {
-    font-size: 2.5em;
+    font-size: 3.5em;
     font-weight: bold;
-    color: #007bff;
-    margin-left: 10px;
+    background: linear-gradient(to right, var(--accent-start-color), var(--accent-end-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent; /* fallback for browsers that don't support text-fill-color */
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    vertical-align: middle;
+}
+
+.currency-yen {
+    font-size: 1.5em;
+    font-weight: bold;
+    background: linear-gradient(to right, var(--accent-start-color), var(--accent-end-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent; /* fallback */
+    margin-left: 5px;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.tax-info {
+    font-size: 0.9em;
+    color: var(--text-color-light);
+    margin-top: 5px;
 }
 
 #exportPdfButton {
-    background-color: #007bff;
+    background: linear-gradient(to right, var(--accent-start-color), var(--accent-end-color));
     color: white;
     border: none;
-    padding: 12px 25px;
-    border-radius: 5px;
+    padding: 15px 35px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 1em;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-top: 25px;
+    transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
     white-space: nowrap;
+    box-shadow: 0 4px 15px rgba(140, 130, 208, 0.4);
 }
 
 #exportPdfButton:hover {
-    background-color: #0056b3;
+    background: linear-gradient(to right, #7a73ba, #e07b7e);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(140, 130, 208, 0.5);
 }
 
+#exportPdfButton:active {
+    background: linear-gradient(to right, #6d67a8, #c66f72);
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(140, 130, 208, 0.3);
+}
+
+
+/* PDF出力時に非表示にする要素 (例: PDFボタン自体) */
 @media print {
-    #exportPdfButton {
-        display: none !important;
+    /* 全体的な印刷設定 */
+    body {
+        background-color: #fff;
+        padding: 0;
+        align-items: flex-start;
+        font-size: 9pt; /* 基本フォントサイズをさらに小さく */
+        margin: 0; /* マージンをリセット */
+        /* PDFを1枚に収めるための最終手段（ブラウザ依存度高） */
+        /* transform: scale(0.8); */ /* 全体を縮小するが、文字の鮮明度が落ちる可能性あり */
+        /* transform-origin: top left; */
     }
     .container {
         box-shadow: none;
         border-radius: 0;
-        padding: 20px;
+        padding: 8mm 10mm; /* 物理的な単位でパディングを調整（上下をさらに狭く） */
+        margin: 0;
+        max-width: 100%; /* 最大幅もリセット */
+        width: auto; /* 幅を自動調整 */
+        height: auto !important; /* 高さも自動調整 */
+        overflow: visible !important; /* はみ出しを許可 */
     }
-    body {
-        background-color: #fff;
+    h1 {
+        font-size: 1.6em; /* 印刷時のH1サイズをさらに小さく */
+        margin-bottom: 10px;
     }
+    .subtitle {
+        font-size: 0.9em; /* 印刷時のサブタイトルサイズ */
+        margin-bottom: 15px;
+    }
+    h2 {
+        font-size: 1.1em; /* 印刷時のH2サイズをさらに小さく */
+        margin-bottom: 10px;
+        padding-bottom: 4px;
+        border-bottom: 1px solid #ccc; /* 印刷時の下線は単色に */
+    }
+    .section {
+        margin-bottom: 10px; /* 印刷時のセクション間隔を狭める */
+        padding-bottom: 8px; /* 下部パディングも調整 */
+        border-bottom: 1px dashed #eee; /* 薄い破線で区切りを明確に */
+        break-inside: avoid; /* セクション途中の改ページを避ける */
+        page-break-inside: avoid;
+    }
+    .section:last-of-type {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    .input-group,
+    .checkbox-group-item,
+    .checkbox-item,
+    .description {
+        margin-bottom: 5px; /* 印刷時の要素間隔をさらに狭める */
+        padding: 0; /* パディングをなくす */
+        font-size: 0.85em; /* 印刷時のフォントサイズをさらに小さく */
+        line-height: 1.4; /* 行の高さを調整 */
+    }
+    input[type="text"],
+    input[type="number"] {
+        padding: 3px 5px; /* 印刷時の入力フィールドパディング */
+        font-size: 0.85em;
+        width: 100%;
+    }
+    input[type="checkbox"] {
+        transform: scale(0.8); /* チェックボックスをさらに縮小 */
+        margin-right: 5px;
+    }
+    .checkbox-label {
+        font-size: 0.9em;
+    }
+    .checkbox-price {
+        font-size: 0.85em;
+    }
+
+    /* カラムレイアウトの調整 */
+    .content-wrapper {
+        flex-direction: column; /* 強制的に1カラム */
+        gap: 10px; /* カラム間のギャップを調整 */
+    }
+    .left-column, .right-column {
+        box-shadow: none;
+        background-color: transparent;
+        padding: 0; /* カラムのパディングをなくす */
+        margin: 0; /* カラムのマージンをなくす */
+    }
+
+    /* トグル機能の調整 */
     .toggle-content {
-        display: block !important;
+        display: block !important; /* PDF出力時にはトグルを全て開く */
+        padding: 0; /* 印刷時のパディングをなくす */
+        margin-top: 5px; /* ヘッダーとの間隔 */
+    }
+    .toggle-header {
+        background-color: transparent;
+        border-bottom: none;
+        padding-left: 0;
+        font-weight: bold;
+        color: #333;
+        font-size: 0.9em; /* 印刷時のサイズ */
+        margin-bottom: 5px; /* コンテンツとの間隔 */
     }
     .toggle-header .toggle-icon {
         display: none;
@@ -223,12 +484,52 @@ hr {
         padding: 0;
         margin-left: 0;
     }
-    .toggle-header {
-        background-color: transparent;
-        border-bottom: none;
-        padding-left: 0;
-    }
     .toggle-content ul {
-        margin-left: 28px;
+        margin-left: 10px;
+    }
+    .toggle-content ul li {
+        font-size: 0.8em; /* 印刷時のリストアイテムフォントサイズ */
+        margin-bottom: 2px;
+        padding-left: 12px;
+    }
+    .toggle-content ul li::before {
+        font-size: 0.9em;
+        line-height: 1.2;
+    }
+
+    /* 合計金額エリアの調整 */
+    .total-area {
+        box-shadow: none;
+        background-color: transparent;
+        padding: 10px 0;
+        margin-top: 15px;
+    }
+    .total-area h3 {
+        font-size: 1.1em;
+        margin-bottom: 5px;
+    }
+    #totalPrice {
+        font-size: 2.2em; /* 印刷時の金額サイズを調整 */
+        margin-top: 5px;
+        margin-bottom: 5px;
+        background: none;
+        -webkit-background-clip: unset;
+        -webkit-text-fill-color: var(--accent-start-color);
+        color: var(--accent-start-color);
+    }
+    .currency-yen {
+        font-size: 0.9em; /* 印刷時の「円」のサイズを調整 */
+        background: none;
+        -webkit-background-clip: unset;
+        -webkit-text-fill-color: var(--accent-start-color);
+        color: var(--accent-start-color);
+    }
+    .tax-info {
+        font-size: 0.7em;
+    }
+
+    /* その他の非表示要素 */
+    #exportPdfButton {
+        display: none !important;
     }
 }
