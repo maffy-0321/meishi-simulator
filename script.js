@@ -1,48 +1,43 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 各チェックボックスグループのセレクタを新しいname属性に合わせて更新
-    const basePriceCheckboxes = document.querySelectorAll('input[name="basePrice"]');
-    const copywritingFeeCheckboxes = document.querySelectorAll('input[name="copywritingFee"]');
-    // 名刺デザインではフィニッシュオプションがないため、セレクタから削除
-    // const finishOptionCheckboxes = document.querySelectorAll('input[name="finishOption"]'); 
-    // オプション（任意）のデータ原本項目
-    const optionOriginalDataCheckboxes = document.querySelectorAll('input[name="optionOriginalData"]'); 
+    // 各チェックボックスグループのセレクタを名刺デザイン見積もりシミュレーターのname属性に合わせて更新
+    const basePriceCheckboxes = document.querySelectorAll('input[name="basePrice"]'); // 基本料金
+    const copywritingFeeCheckboxes = document.querySelectorAll('input[name="copywritingFee"]'); // コピー作成費
+    const optionOriginalDataCheckboxes = document.querySelectorAll('input[name="optionOriginalData"]'); // オプション（任意）のデザインデータ原本
 
     const totalPriceElement = document.getElementById('totalPrice');
     const exportPdfButton = document.getElementById('exportPdfButton');
     
-    // ★★★ トグル機能の要素を取得 (今回はオプションのトグルのみ) ★★★
+    // ★★★ トグル機能の要素を取得 (名刺デザインでは「詳細」トグル) ★★★
     const toggleHeaders = document.querySelectorAll('.toggle-header');
 
-    // ★★★ 排他選択を制御する関数（変更なし） ★★★
+    // ★★★ 排他選択を制御する関数（修正済み） ★★★
     function handleExclusiveCheckboxSelection(event, groupName) {
         const clickedCheckbox = event.target;
         const checkboxesInGroup = document.querySelectorAll(`input[name="${groupName}"]`);
 
-        // このグループ内で「選択されたものが無い」状態を許容するかどうかをここで判断
-        // 名刺デザインのコピー作成費も「両方選択しない」を許容する可能性があります
+        // コピー作成費のみ「選択しない」状態を許容
         const allowNoneSelected = (groupName === 'copywritingFee'); 
 
-        if (!clickedCheckbox.checked) {
-            const currentlyChecked = Array.from(checkboxesInGroup).filter(cb => cb.checked);
-            if (!allowNoneSelected && currentlyChecked.length === 0) {
+        // クリックされたチェックボックスが現在チェックされている場合
+        if (clickedCheckbox.checked) {
+            checkboxesInGroup.forEach(checkbox => {
+                if (checkbox !== clickedCheckbox) {
+                    checkbox.checked = false; // 他のチェックボックスをオフにする
+                }
+            });
+        } else {
+            // クリックされたものがオフになった場合
+            const anyOtherChecked = Array.from(checkboxesInGroup).some(cb => cb.checked);
+            if (!allowNoneSelected && !anyOtherChecked) {
+                // noneを許容しないグループで、他が何もチェックされていない場合、自身を強制的にオンに戻す
                 clickedCheckbox.checked = true;
             }
         }
-
-        checkboxesInGroup.forEach(checkbox => {
-            if (checkbox !== clickedCheckbox) {
-                checkbox.checked = false;
-            }
-        });
         
-        if (!clickedCheckbox.checked) {
-            clickedCheckbox.checked = true;
-        }
-
         calculateAndDisplayTotal();
     }
 
-    // ★★★ 合計金額を計算して表示する関数（変更なし） ★★★
+    // ★★★ 合計金額を計算して表示する関数 ★★★
     function calculateAndDisplayTotal() {
         let currentTotal = 0;
 
@@ -62,73 +57,90 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. 基本料金 (排他選択)
     basePriceCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', (event) => {
-            handleExclusiveCheckboxSelection(event, 'basePrice');
-        });
+        checkbox.addEventListener('change', (event) => handleExclusiveCheckboxSelection(event, 'basePrice'));
     });
 
     // 2. コピー作成費 (排他選択、両方なしも許容)
     copywritingFeeCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', (event) => {
-            handleExclusiveCheckboxSelection(event, 'copywritingFee');
-        });
+        checkbox.addEventListener('change', (event) => handleExclusiveCheckboxSelection(event, 'copywritingFee'));
     });
 
-    // 3. フィニッシュオプションは名刺デザインにはないのでイベントリスナーは不要
-    // finishOptionCheckboxes.forEach(...)
+    // 3. 名刺デザインにはフィニッシュオプションはないため、関連セレクタの参照は削除
+    //    もしWebサイト制作シミュレーターとファイルを共用する場合は、HTMLに応じてセレクタを調整する必要がある
 
     // 4. オプション（任意）のデザインデータ原本 (通常のチェックボックス)
     optionOriginalDataCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', calculateAndDisplayTotal);
     });
 
-    // ★★★ トグル機能のイベントリスナー（変更なし） ★★★
+    // ★★★ トグル機能のイベントリスナー ★★★
     toggleHeaders.forEach(header => {
         header.addEventListener('click', () => {
             const toggleContent = header.nextElementSibling;
             if (toggleContent && toggleContent.classList.contains('toggle-content')) {
-                if (toggleContent.style.display === 'block') {
-                    toggleContent.style.display = 'none';
+                // heightをmaxHeightに切り替えることでtransitionを有効にする
+                if (toggleContent.style.maxHeight) { 
+                    toggleContent.style.maxHeight = null; 
                     header.classList.remove('active');
-                } else {
-                    toggleContent.style.display = 'block';
+                } else { 
+                    toggleContent.style.maxHeight = toggleContent.scrollHeight + 'px'; 
                     header.classList.add('active');
                 }
             }
         });
     });
 
-    // ★★★ PDF出力ボタンのイベントリスナー（変更なし） ★★★
+    // ★★★ PDF出力ボタンのイベントリスナー ★★★
     exportPdfButton.addEventListener('click', () => {
+        // ここに「PDFの出力はPCから行ってください」というアラートを追加
+        const isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        if (isMobile) {
+            alert('PDFの出力はPCから行ってください。スマートフォンからの出力は表示が崩れる可能性が高いため、推奨しません。');
+            // 必要であれば、ここでreturn; を追加してモバイルからのPDF生成を中断することもできます。
+            // return; 
+        }
+
+        // PDF出力前に、一時的に全てのトグルを開く
         toggleHeaders.forEach(header => {
             header.classList.add('active');
             const toggleContent = header.nextElementSibling;
             if (toggleContent && toggleContent.classList.contains('toggle-content')) {
-                toggleContent.style.display = 'block';
+                toggleContent.style.maxHeight = toggleContent.scrollHeight + 'px'; // 正しい高さを設定
+                toggleContent.style.overflow = 'visible'; // overflowをvisibleに設定
             }
         });
 
         const input = document.getElementById('printableArea');
 
-        html2canvas(input, { scale: 2 }).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
+        html2canvas(input, { 
+            scale: 2, // PCでの出力品質を重視し、高めのスケールに戻す
+            useCORS: true, 
+            logging: false,
+            // 描画が途切れる場合のためのオプション (実験的)
+            // allowTaint: true, // クロスオリジン画像を汚染して描画を許可
+            // foreignObjectRendering: true // SVGやiframeなどの要素を正しくレンダリング (一部ブラウザで問題も)
+        }).then(canvas => {
+            const imgData = canvas.toDataURL('image/png'); // 品質を重視しPNGに戻す
             const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF('p', 'mm', 'a4');
+            const pdf = new jsPDF('p', 'mm', 'a4'); // A4サイズ（210mm x 297mm）
 
-            const imgWidth = 210;
-            const pageHeight = 297;
-            const imgHeight = canvas.height * imgWidth / canvas.width;
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+
+            const imgProps = pdf.getImageProperties(imgData);
+            const imgHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
             let heightLeft = imgHeight;
             let position = 0;
 
-            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-            heightLeft -= pageHeight;
+            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight); // PNG形式で追加
+            heightLeft -= pdfHeight;
 
-            while (heightLeft >= 0) {
-                position = heightLeft - imgHeight;
+            while (heightLeft > 0) {
+                position = heightLeft - imgHeight; 
                 pdf.addPage();
-                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
+                pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight);
+                heightLeft -= pdfHeight;
             }
             
             const now = new Date();
@@ -137,9 +149,25 @@ document.addEventListener('DOMContentLoaded', () => {
             const day = now.getDate().toString().padStart(2, '0');
             const hours = now.getHours().toString().padStart(2, '0');
             const minutes = now.getMinutes().toString().padStart(2, '0');
-            const fileName = `business_card_estimate_${year}${month}${day}_${hours}${minutes}.pdf`; // ファイル名変更
+            
+            // HTMLのタイトルタグからファイル名を動的に取得
+            const pageTitle = document.title;
+            const fileName = `${pageTitle}_${year}${month}${day}_${hours}${minutes}.pdf`; 
 
             pdf.save(fileName);
+
+            // PDF出力後にトグルを元の状態に戻す
+            toggleHeaders.forEach(header => {
+                header.classList.remove('active');
+                const toggleContent = header.nextElementSibling;
+                if (toggleContent && toggleContent.classList.contains('toggle-content')) {
+                    toggleContent.style.maxHeight = null;
+                    toggleContent.style.overflow = 'hidden';
+                }
+            });
+        }).catch(error => {
+            console.error("PDF生成中にエラーが発生しました:", error);
+            alert("PDF生成中にエラーが発生しました。時間をおいて再度お試しいただくか、別のブラウザでお試しください。");
         });
     });
 
@@ -162,13 +190,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 各グループの初期選択を適用
+    // 各グループの初期選択を適用 (名刺デザイン見積もりシミュレーターのname属性に合わせて調整)
     initializeExclusiveSelection(basePriceCheckboxes, 'one_side'); // 基本料金のデフォルトは片面デザイン
-    // copywritingFeeCheckboxesはデフォルト選択なし（両方未選択を許容）
-    initializeExclusiveSelection(copywritingFeeCheckboxes); // 初期選択なし
+    initializeExclusiveSelection(copywritingFeeCheckboxes); // コピー作成費はデフォルト選択なし（両方未選択を許容）
     
     // オプションは初期状態では選択しない
     optionOriginalDataCheckboxes.forEach(checkbox => checkbox.checked = false);
-
+    
     calculateAndDisplayTotal();
 });

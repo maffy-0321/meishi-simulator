@@ -121,7 +121,6 @@ h1 {
     margin-bottom: 35px;
     padding-bottom: 25px;
     border-bottom: 1px solid #f0f0f0;
-    /* 印刷時に途中で分割されないようにする */
     break-inside: avoid;
     page-break-inside: avoid;
 }
@@ -166,7 +165,7 @@ input[type="number"] {
 }
 
 input[type="text"]:focus,
-input[type="number"]F:focus {
+input[type="number"]:focus {
     border-color: var(--accent-start-color);
     box-shadow: 0 0 0 3px rgba(140, 130, 208, 0.2);
     outline: none;
@@ -315,11 +314,11 @@ input[type="checkbox"]:focus {
 #totalPrice {
     font-size: 3.5em;
     font-weight: bold;
-    background: linear-gradient(to right, var(--accent-start-color), var(--accent-end-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent; /* fallback for browsers that don't support text-fill-color */
+    color: var(--accent-start-color); /* グラデーションを削除し、単色に戻す */
+    background: none; /* グラデーションのプロパティをリセット */
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: unset;
+    background-clip: unset;
     display: inline-block;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -329,11 +328,11 @@ input[type="checkbox"]:focus {
 .currency-yen {
     font-size: 1.5em;
     font-weight: bold;
-    background: linear-gradient(to right, var(--accent-start-color), var(--accent-end-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent; /* fallback */
+    color: var(--accent-start-color); /* グラデーションを削除し、単色に戻す */
+    background: none; /* グラデーションのプロパティをリセット */
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: unset;
+    background-clip: unset;
     margin-left: 5px;
     vertical-align: middle;
     display: inline-block;
@@ -433,12 +432,12 @@ input[type="checkbox"]:focus {
     }
     input[type="text"],
     input[type="number"] {
-        padding: 3px 5px; /* 印刷時の入力フィールドパディング */
+        padding: 3px 5px;
         font-size: 0.85em;
         width: 100%;
     }
     input[type="checkbox"] {
-        transform: scale(0.8); /* チェックボックスをさらに縮小 */
+        transform: scale(0.8);
         margin-right: 5px;
     }
     .checkbox-label {
@@ -450,21 +449,21 @@ input[type="checkbox"]:focus {
 
     /* カラムレイアウトの調整 */
     .content-wrapper {
-        flex-direction: column; /* 強制的に1カラム */
-        gap: 10px; /* カラム間のギャップを調整 */
+        flex-direction: column;
+        gap: 10px;
     }
     .left-column, .right-column {
         box-shadow: none;
         background-color: transparent;
-        padding: 0; /* カラムのパディングをなくす */
-        margin: 0; /* カラムのマージンをなくす */
+        padding: 0;
+        margin: 0;
     }
 
     /* トグル機能の調整 */
     .toggle-content {
-        display: block !important; /* PDF出力時にはトグルを全て開く */
-        padding: 0; /* 印刷時のパディングをなくす */
-        margin-top: 5px; /* ヘッダーとの間隔 */
+        display: block !important;
+        padding: 0;
+        margin-top: 5px;
     }
     .toggle-header {
         background-color: transparent;
@@ -472,8 +471,8 @@ input[type="checkbox"]:focus {
         padding-left: 0;
         font-weight: bold;
         color: #333;
-        font-size: 0.9em; /* 印刷時のサイズ */
-        margin-bottom: 5px; /* コンテンツとの間隔 */
+        font-size: 0.9em;
+        margin-bottom: 5px;
     }
     .toggle-header .toggle-icon {
         display: none;
@@ -488,7 +487,7 @@ input[type="checkbox"]:focus {
         margin-left: 10px;
     }
     .toggle-content ul li {
-        font-size: 0.8em; /* 印刷時のリストアイテムフォントサイズ */
+        font-size: 0.8em;
         margin-bottom: 2px;
         padding-left: 12px;
     }
@@ -509,7 +508,7 @@ input[type="checkbox"]:focus {
         margin-bottom: 5px;
     }
     #totalPrice {
-        font-size: 2.2em; /* 印刷時の金額サイズを調整 */
+        font-size: 2.2em;
         margin-top: 5px;
         margin-bottom: 5px;
         background: none;
@@ -518,7 +517,7 @@ input[type="checkbox"]:focus {
         color: var(--accent-start-color);
     }
     .currency-yen {
-        font-size: 0.9em; /* 印刷時の「円」のサイズを調整 */
+        font-size: 0.9em;
         background: none;
         -webkit-background-clip: unset;
         -webkit-text-fill-color: var(--accent-start-color);
@@ -532,4 +531,5 @@ input[type="checkbox"]:focus {
     #exportPdfButton {
         display: none !important;
     }
+}
 }
